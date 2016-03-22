@@ -16,6 +16,9 @@ $(function(){
         maxSize: 4000000000000000,
         onError: function(error){
             console.log(error);
+        },
+        onSuccess: function(){
+            console.log(2);
         }
     });
 })

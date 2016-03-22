@@ -91,34 +91,46 @@
     };
 
     var iframeNum = 0;
-    var iframeUpload = function(obj,options){
+    function iframeUpload(obj,options){
         this.options = $.extend(defaults, options);
         this.init(obj);
     };
-    iframeUpload.protoType = {
-        init : function(){
+    iframeUpload.prototype = {
+        init : function(target){
             var _this = this;
+            target = $(target);
             iframeNum++;
-            var iframe = $('<iframe name="iframe_'+ iframeNum +'" style="display:none"></iframe>')
-            var form = $('<form target="iframe_'+ iframeNum +'" action="'+ url +'" name="form_'+ iframeNum +'" style="display:none;" enctype="multipart/form-data"></form>');
-            var html = $('<input type="file" name="file" />');
+            var iframe = $('<iframe name="iframe_'+ iframeNum +'" style="display:none"></iframe>');
+            var form = $('<form target="iframe_'+ iframeNum +'" action="'+ _this.options.url +'" name="form_'+ iframeNum +'" enctype="multipart/form-data"></form>');
+            var html = $('<input type="file" name="file" />').css({
+                'width': target.width(),
+                'height': target.height(),
+                'top': target.offset().top,
+                'left': target.offset().left,
+                'position': 'absolute',
+                'opacity': '0',
+                'cursor': 'pointer',
+                'z-index': 1000 
+            });
+             
+            html.on('change',function(){
+                _this.options.onSelect();
+            });
+            
             for (key in this.options.data) {
                 html += '<input type="hidden" name="' + key + '" value="' + this.options.data[key] + '">';
             }
             form.append(html);
-            form.on('change','[type="file"]',function(){
-                _this.options.onSelect();
-            });
+            
             iframe.load(function() {
                 var contents = $(this).contents().get(0);
                 var data = $(contents).find('body').text();
-                if ('json' == opts.dataType) {
+                /*if ('json' == opts.dataType) {
                     data = window.eval('(' + data + ')');
-                }
+                }*/
                 _this.options.onSuccess(data);
-                iframe.remove();
-                form.remove();
             });
+
             $('body').append(iframe).append(form);
         },
         upload: function(){
