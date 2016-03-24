@@ -1,3 +1,2 @@
-# myItem
-it is a test item of shangxinbo
-I have update this item
+# xUpload
+A simplest uploader for jQuery.support html5 and iframe method.  
