@@ -36,3 +36,7 @@ $('#upload').xUpload({
     }
 })
 </pre>
+
+## License
+
+[GPL](https://github.com/ShangXinbo/xUpload/blob/master/LICENSE)
