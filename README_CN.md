@@ -1,9 +1,9 @@
 # xUpload
 一个基于jQuery的简单的上传插件.
 
-[[README IN ENGLISH]](https://github.com/ShangXinbo/xUpload)
+[ [ README IN ENGLISH here ] ](https://github.com/ShangXinbo/xUpload)
 
-## intro
+## 简介
 * 需要1.4版本以上的jQuery作为基础库
 * 包含以HTML5 XMLHTTPREQUEST2为原理写的 __htmlUpload__  和基于iframe无刷新写的 __iframeUpload__。
 * 良好的兼容性，现代浏览器使用心得接口完成，低版本浏览器使用旧的方式，平滑过渡，而两种方法可根据情况取舍，测试可兼容至IE8+
@@ -39,5 +39,4 @@ $('#upload').xUpload({
 </pre>
 
 ## License
-
 [GPL](https://github.com/ShangXinbo/xUpload/blob/master/LICENSE)
