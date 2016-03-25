@@ -1,7 +1,7 @@
 # xUpload
 A simplest uploader for jQuery.support html5 and iframe method.
 
-[《中文说明》](http://www.baidu.com)
+[《中文说明》](https://github.com/ShangXinbo/xUpload/blob/master/README_CN.md)
 
 ## intro
 * require jQuery 1.4+, it's a jQuery plugin
@@ -38,5 +38,4 @@ $('#upload').xUpload({
 </pre>
 
 ## License
-
 [GPL](https://github.com/ShangXinbo/xUpload/blob/master/LICENSE)
