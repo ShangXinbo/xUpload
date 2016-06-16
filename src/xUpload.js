@@ -138,21 +138,11 @@
 
             var iframe = $('<iframe name="iframe_' + iframeNum + '" style="display:none"></iframe>');
             var form = $('<form method="post" target="iframe_' + iframeNum + '" action="' + _this.options.url + '" name="form_' + iframeNum + '" enctype="multipart/form-data"></form>');
-            var html = $('<input type="file" name="' + _this.options.name + '" />').css({
-                'width': target.width(),
-                'height': target.height(),
-                'top': target.offset().top,
-                'left': target.offset().left,
-                'position': 'absolute',
-                'opacity': '0',
-                'cursor': 'pointer',
-                'z-index': 1000
-            });
-
-            html.on('change', function() { //size limit is not supported here 
-                _this.options.onSelect();
-                _this.upload(this);
-            });
+            var html = '<input type="file" name="' + _this.options.name +
+                '" style="width:'+ target.width() +'px;height:'+ target.height() +
+                'px;top:'+ target.offset().top +
+                'px;left:'+ target.offset().left +
+                'px;opacity:0;position: absolute;cursor: pointer;z-index:1000;" />';
 
             //other data
             for (key in this.options.data) {
@@ -172,7 +162,10 @@
                 iframeLoadFirst = 1; //to prevent iframe loaded trigger when the document loaded
             });
             $('body').append(iframe).append(form);
-
+            $('body input[type="file"]').on('change',function(){ //size limit is not supported here
+                _this.options.onSelect();
+                _this.upload(this);
+            });
         },
         upload: function(obj) {
             $(obj).parents('form').submit();
