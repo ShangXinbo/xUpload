@@ -16,7 +16,7 @@
 ### 参数
 参数名称     |    参数值     |    描述
 ----------------|----------------|----
-name           | String          |  向后台传值的key，比如POST['file'],这里边的file，当multiple设置为true时，插件默认使用“file[]” 
+name           | String          |  向后台传值的key，比如POST['file'],这里边的file，当multiple设置为true时，插件默认替换为“file[]” 
 auto             | Boolen        |  选择文件后是否自动启动上传  ，默认值 true
 accept         | String(MIME type)  | 仅支持现代浏览器，所支持上传文件的类型，标准的MIME类型，如不清楚可查[MIME 参考手册]（http://www.w3school.com.cn/media/media_mimeref.asp)
 url                | String          | 上传文件请求的接口地址
