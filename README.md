@@ -19,7 +19,7 @@ name          | value         | description
 ---------------|---------------|----
 name          | String        | the key name in formdata to send to server，when multiple is setted true,the key will be replaced with 'name[]'
 auto            | Boolen      |  if true, upload triggered when select over; 
-accept        | String(MIME type)  |  only supported in modern browsers,the type of file you can select [MIME](http://www.w3school.com.cn/media/media_mimeref.asp)
+accept        | String(MIME type)  |  only supported in modern browsers,the type of file you can select.More read [MIME](http://www.w3school.com.cn/media/media_mimeref.asp)
 url               | String        |  the URL of upload commit 
 maxSize     | Number     | only supported in modern browsers,maxSize limit you choose file, default 4\*1024\*1024 
 multiple       | Boolen      |  only supported in modern browsers, if true, multiple files choose is supported
