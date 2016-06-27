@@ -7,11 +7,11 @@ var release_version = '1.2.0'
 
 gulp.task('js compress', function() {
     var dest = 'dist/';
-    var dest2 = 'public/js/'
+    var demo_js = 'public/js/'
     return gulp.src('src/*.js')
         .pipe(uglify())
         .pipe(rename({ extname: '.min.js' }))
         .pipe(gulp.dest(dest))
-        .pipe(gulp.dest(dest2));
+        .pipe(gulp.dest(demo_js));
 });
 gulp.task('default', ['js compress']);
