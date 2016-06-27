@@ -1,6 +1,6 @@
 /*
  * @fileOverview  xUpload
- * @version    1.1.2
+ * @version    1.2
  * @date       2016-3-24
  * @author     Xinbo Shang
  *
@@ -27,19 +27,27 @@
 
     //default options for this plugin
     var defaults = {
-        name: 'file',   // post key of the file, you can get the file through file['name']
-        accept: '',     // the MIME type of files that the uploader can accept    
-        url: '/upload', // the URL for commit 
-        maxSize: 4 * 1024 * 1024, // maxSize of the upload file, support in modern browsers
-        data: {},       // other params to send
-        onSelect: function () {
-        },  // trigger when select a file
-        onSuccess: function () {
-        }, // trigger when upload success
-        onError: function () {
+        auto: true,          // if set true, upload when you select files;
+        name: 'file',        // post key of the file, you can get the file through file['name']
+        accept: '',          // the MIME type of files that the uploader can accept, only support in modern browsers
+        multiple: false,     // support multiple files upload, only support in modern browsers
+        url: '/upload',      // the URL for commit
+        maxSize: 4 * 1024 * 1024, // maxSize of the upload file, only support in modern browsers
+        data: {},            // other params to send
+        onSelect: function (event,files) {   // trigger when select a file
+            // @param event  the button of choose file
+            // @param files  files choosed
+        },
+        onSuccess: function (data) {         // trigger when upload success
+            // @param data  xhr return data
+        },
+        onError: function (error) {        // trigger when upload fail, only support in modern browsers
+            // @param error  xhr.statusText
+        },
+        onProgress:function(event){   // trigger when xhr2 progress, only support in modern browsers
+            // @param event progress
         }
     };
-
 
     /* upload for HTML5 and XMLHttpRequest2
      * when use on modern browsers,such as chrome,firefox,IE11,safari,opera
@@ -50,13 +58,13 @@
         this.init(obj);
     };
 
-    /* upload for ie8~ie9 
+    /* upload for ie8~ie9
      * when use on older browsers
      */
     var iframeNum = 0,
         iframeLoadFirst = 0;
 
-    var iframeUpload = function(obj, options) {
+    function iframeUpload(obj, options) {
         this.options = $.extend(defaults, options);
         this.init(obj);
     };
@@ -65,13 +73,14 @@
 
         init: function (target) {
 
-            var _this = this,
-                target = $(target);
+            var _this = this;
 
-            var dom = $('<input type="file" style="width:'+ target.width() +'px;height:'+ target.height() +
-                                'px;top:'+ target.offset().top +
-                                'px;left:'+ target.offset().left +
-                                'px;opacity:0;position:absolute;cursor:pointer;z-index:1000;" />');
+            var dom = $('<input type="file" />').css(getBtnCSS(target));
+
+            //set multiple
+            if (_this.options.multiple) {
+                dom.attr('multiple', 'multiple');
+            }
 
             //accept file type limit ,MIME type string
             if (this.options.accept) {
@@ -79,13 +88,17 @@
             }
 
             dom.on('change', function (event) {
-                _this.file = this.files[0]; //TODO 支持多文件上传
                 //maxsize limit
-                if (_this.file.size <= _this.options.maxSize) {
-                    _this.options.onSelect();
-                    _this.upload(); //TODO 是否立即上传 this.options.auto
-                } else {
-                    console.log('Exceed the maximum file limit');
+                for (var i = 0; i < this.files.length; i++) {
+                    if (this.files[i].size >= _this.options.maxSize) {
+                        console.log('Exceed the maximum file limit');
+                        return false;
+                    }
+                }
+                _this.file = this.files;
+                _this.options.onSelect(event,_this.file);
+                if (_this.options.auto) {
+                    _this.upload();
                 }
             });
             $('body').append(dom);
@@ -96,7 +109,13 @@
             var _this = this;
             var formData = new FormData();
 
-            formData.append(_this.options.name, _this.file); //add file
+            if (_this.options.multiple) {
+                for (var i = 0; i < _this.file.length; i++) {
+                    formData.append(_this.options.name + '[]', _this.file[i]); //add file
+                }
+            } else {
+                formData.append(_this.options.name, _this.file[0]); //add file
+            }
 
             //other data to send
             if (this.options.data) {
@@ -105,20 +124,21 @@
                 }
             }
 
-            var xhr = new XMLHttpRequest(); // new XMLHttpRequest2
+            var xhr = new XMLHttpRequest(); // new XMLHttpRequest2  html5 support
             xhr.open('POST', _this.options.url, true); //upload use method post
+            xhr.onprogress = function(event){
+                this.options.onProgress(event);
+            };
             xhr.onload = function (event) {
                 if (xhr.status == 200) {
-                    console.log(xhr.responseText);
-                    return;
                     var data = eval('(' + xhr.responseText + ')');
                     if (data.status == 0) {
-                        _this.onSuccess(); //upload success
+                        _this.options.onSuccess(data); //upload success
                     } else {
-                        _this.onError();
+                        _this.options.onError();
                     }
                 } else {
-                    _this.onError();
+                    _this.onError(xhr.statusText);
                 }
             };
             xhr.send(formData);
@@ -126,20 +146,23 @@
     };
 
     iframeUpload.prototype = {
+
         init: function (target) {
+            var _this = this;
 
-            var _this = this,
-                target = $(target);
-
-            iframeNum++; //prevent Multiple uploader conflict
+            iframeNum++;   //prevent Multiple uploader conflict
 
             var iframe = $('<iframe name="iframe_' + iframeNum + '" style="display:none"></iframe>');
             var form = $('<form method="post" target="iframe_' + iframeNum + '" action="' + _this.options.url + '" name="form_' + iframeNum + '" enctype="multipart/form-data"></form>');
-            var html = '<input type="file" name="' + _this.options.name +
-                                '" style="width:' + target.width() + 'px;height:' + target.height() +
-                                'px;top:' + target.offset().top +
-                                'px;left:' + target.offset().left +
-                                'px;opacity:0;position: absolute;cursor: pointer;z-index:1000;" />';
+            var html = $('<input type="file" name="' + _this.options.name + '" />').css(getBtnCSS(target));
+
+            html.on('change', function (event) {
+                var file = $(this).val();
+                _this.options.onSelect(event,file);
+                if (this.options.auto) {
+                    _this.upload(this);
+                }
+            });
 
             //other data
             for (key in this.options.data) {
@@ -156,18 +179,28 @@
                     }
                     _this.options.onSuccess(data);
                 }
-                iframeLoadFirst = 1; //to prevent iframe loaded trigger when the document loaded
+                iframeLoadFirst = 1;     //to prevent iframe loaded trigger when the document loaded
             });
             $('body').append(iframe).append(form);
-            $('body input[type="file"]').on('change', function () { //size limit is not supported here
-                _this.options.onSelect();
-                _this.upload(this);
-            });
         },
         upload: function (obj) {
             $(obj).parents('form').submit();
         }
     };
+
+
+    function getBtnCSS(target){
+        return {
+            'width': $(target).width(),
+            'height': $(target).height(),
+            'top': $(target).offset().top,
+            'left': $(target).offset().left,
+            'position': 'absolute',
+            'opacity': '0',
+            'cursor': 'pointer',
+            'z-index': 1000
+        };
+    }
 
     $.fn.xUpload = function (options) {
         //Multi element support
