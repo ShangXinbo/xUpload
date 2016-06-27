@@ -43,5 +43,5 @@ $('#upload').xUpload({
 ### 其他版本文档
 [ [ README IN ENGLISH ] ](https://github.com/ShangXinbo/xUpload)
 
-## 请遵守开源协议
+### 请遵守开源协议
 [GPL](https://github.com/ShangXinbo/xUpload/blob/master/LICENSE)
