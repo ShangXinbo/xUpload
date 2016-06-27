@@ -13,6 +13,7 @@ pay attention to that new APIs solution is trend,I made the two method separated
 * HTML5 function named __htmlUpload__  and iframe function named __iframeUpload__  automatic switch based user's browsers.
 * support ie8+ 
 * light,all lib within  6k -
+* support module loaders(AMD,CMD,UMD)
 
 ### Options
 name          | value         | description
