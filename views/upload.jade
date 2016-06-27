@@ -1,0 +1,26 @@
+doctype html
+html.uk-notouch.uk-height-1-1
+    head
+        meta(charset='UTF-8')
+        title
+        link(rel='stylesheet', href='/css/uikit.min.css')
+        link(rel='stylesheet', href='/css/components/datepicker.css')
+        script(src='/js/jquery.min.js')
+    body.uk-block-muted.uk-height-1-1
+        block content
+            #shang(style='width:200px; height:40px; text-align: center;') 点我上传
+            script(src='/js/xUpload.min.js')
+            script(type='text/javascript').
+                $(function(){
+                    $('#shang').xUpload({
+                        url : '/upload/submit/',
+                        maxSize: 4000000000,
+                        onError: function(error){
+                            console.log(error);
+                        },
+                        onSuccess: function(){
+                            console.log(2);
+                        }
+                    });
+                });
+        
