@@ -1,6 +1,6 @@
 /*
  * @fileOverview  xUpload
- * @version    1.0.2
+ * @version    1.1.2
  * @date       2016-3-24
  * @author     Xinbo Shang
  *
@@ -8,7 +8,7 @@
 
 "use strict";
 
-(function(factory) {
+(function (factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Register as anonymous module.
         define(['jquery'], factory);
@@ -19,7 +19,7 @@
         // Browser globals.
         factory(jQuery || Zepto);
     }
-}(function($) {
+}(function ($) {
 
     if (!$) {
         return console.warn('xUpload needs jQuery'); //jQuery must be required
@@ -32,16 +32,19 @@
         url: '/upload', // the URL for commit 
         maxSize: 4 * 1024 * 1024, // maxSize of the upload file, support in modern browsers
         data: {},       // other params to send
-        onSelect: function() {},  // trigger when select a file
-        onSuccess: function() {}, // trigger when upload success 
-        onError: function() {}
+        onSelect: function () {
+        },  // trigger when select a file
+        onSuccess: function () {
+        }, // trigger when upload success
+        onError: function () {
+        }
     };
 
 
     /* upload for HTML5 and XMLHttpRequest2
      * when use on modern browsers,such as chrome,firefox,IE11,safari,opera
      */
-    var htmlUpload = function(obj, options) {
+    var htmlUpload = function (obj, options) {
         this.file = '';
         this.options = $.extend(defaults, options);
         this.init(obj);
@@ -53,35 +56,29 @@
     var iframeNum = 0,
         iframeLoadFirst = 0;
 
-    function iframeUpload(obj, options) {
+    var iframeUpload = function(obj, options) {
         this.options = $.extend(defaults, options);
         this.init(obj);
     };
 
     htmlUpload.prototype = {
 
-        init: function(target) {
+        init: function (target) {
 
             var _this = this,
                 target = $(target);
 
-            var dom = $('<input type="file" />').css({ //set input[type="file"]
-                'width': target.width(),
-                'height': target.height(),
-                'top': target.offset().top,
-                'left': target.offset().left,
-                'position': 'absolute',
-                'opacity': '0',
-                'cursor': 'pointer',
-                'z-index': 1000 //max z-index 1000
-            });
+            var dom = $('<input type="file" style="width:'+ target.width() +'px;height:'+ target.height() +
+                                'px;top:'+ target.offset().top +
+                                'px;left:'+ target.offset().left +
+                                'px;opacity:0;position:absolute;cursor:pointer;z-index:1000;" />');
 
             //accept file type limit ,MIME type string
             if (this.options.accept) {
                 dom.attr('accept', this.options.accept);
             }
 
-            dom.on('change', function(event) {
+            dom.on('change', function (event) {
                 _this.file = this.files[0]; //TODO 支持多文件上传
                 //maxsize limit
                 if (_this.file.size <= _this.options.maxSize) {
@@ -94,7 +91,7 @@
             $('body').append(dom);
         },
 
-        upload: function() {
+        upload: function () {
 
             var _this = this;
             var formData = new FormData();
@@ -110,7 +107,7 @@
 
             var xhr = new XMLHttpRequest(); // new XMLHttpRequest2
             xhr.open('POST', _this.options.url, true); //upload use method post
-            xhr.onload = function(event) {
+            xhr.onload = function (event) {
                 if (xhr.status == 200) {
                     console.log(xhr.responseText);
                     return;
@@ -129,7 +126,7 @@
     };
 
     iframeUpload.prototype = {
-        init: function(target) {
+        init: function (target) {
 
             var _this = this,
                 target = $(target);
@@ -139,10 +136,10 @@
             var iframe = $('<iframe name="iframe_' + iframeNum + '" style="display:none"></iframe>');
             var form = $('<form method="post" target="iframe_' + iframeNum + '" action="' + _this.options.url + '" name="form_' + iframeNum + '" enctype="multipart/form-data"></form>');
             var html = '<input type="file" name="' + _this.options.name +
-                '" style="width:'+ target.width() +'px;height:'+ target.height() +
-                'px;top:'+ target.offset().top +
-                'px;left:'+ target.offset().left +
-                'px;opacity:0;position: absolute;cursor: pointer;z-index:1000;" />';
+                                '" style="width:' + target.width() + 'px;height:' + target.height() +
+                                'px;top:' + target.offset().top +
+                                'px;left:' + target.offset().left +
+                                'px;opacity:0;position: absolute;cursor: pointer;z-index:1000;" />';
 
             //other data
             for (key in this.options.data) {
@@ -150,7 +147,7 @@
             }
 
             form.append(html);
-            iframe.load(function() {
+            iframe.load(function () {
                 if (iframeLoadFirst != 0) {
                     var contents = $(this).contents().get(0);
                     var data = $(contents).find('body').text();
@@ -162,19 +159,19 @@
                 iframeLoadFirst = 1; //to prevent iframe loaded trigger when the document loaded
             });
             $('body').append(iframe).append(form);
-            $('body input[type="file"]').on('change',function(){ //size limit is not supported here
+            $('body input[type="file"]').on('change', function () { //size limit is not supported here
                 _this.options.onSelect();
                 _this.upload(this);
             });
         },
-        upload: function(obj) {
+        upload: function (obj) {
             $(obj).parents('form').submit();
         }
     };
 
-    $.fn.xUpload = function(options) {
+    $.fn.xUpload = function (options) {
         //Multi element support
-        return this.each(function() {
+        return this.each(function () {
             if (window.FormData) {
                 return new htmlUpload(this, options);
             } else {
