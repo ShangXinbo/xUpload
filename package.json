@@ -1,0 +1,33 @@
+{
+  "name": "xupload",
+  "version": "1.2.0",
+  "description": "A light uploader for jQuery which support html5 and iframe method",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShangXinbo/xUpload.git"
+  },
+  "keywords": [
+    "html5",
+    "upload",
+    "iframe",
+    "upload",
+    "ie8",
+    "upload",
+    "light",
+    "upload"
+  ],
+  "author": "shangxinbo",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ShangXinbo/xUpload/issues"
+  },
+  "homepage": "https://github.com/ShangXinbo/xUpload#readme"
+}
