@@ -3,11 +3,10 @@
 const fs = require('fs');
 
 exports.showtpl = function(req, res) {
-    res.render('upload');
+    res.render('demo');
 };
 exports.submit = function(req, res) {
-
-    if(req.files){ //multiple
+    if(req.files){  //multiple
         for(var i=0;i<req.files.length;i++){
             storage(req.files[i].originalname,req.files[i].path);
         }
