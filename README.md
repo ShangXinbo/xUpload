@@ -41,7 +41,7 @@ $('#upload').xUpload({
 })
 </pre>
 
-### Other Doc
+### Doc in other language
 [《中文说明》](https://github.com/ShangXinbo/xUpload/blob/master/README_CN.md)
 
 ## License
