@@ -100,21 +100,28 @@
             }
 
             dom.on('change', function (event) {
+                _this.file = this.files;
+
                 //maxsize limit
                 for (var i = 0; i < this.files.length; i++) {
                     if (this.files[i].size >= _this.options.maxSize) {
-                        console.log('Exceed the maximum file limit');
+                        _this.options.onSelect(event, _this.file, {
+                            'code': 0,
+                            'message': 'file exceed the maximum file limit'
+                        });
                         return false;
                     }
                 }
-                _this.file = this.files;
+
                 if (_this.options.accept) {
                     var accept = _this.options.accept.split(',');
                     for (var j = 0; j < this.files.length; j++) {
                         var arr = this.files[j].name.split('.');
                         if ($.inArray(arr[arr.length - 1], accept) < 0) {
-                            console.error('file type error');
-                            _this.options.onSelect(event, _this.file, {'code': 0, 'message': 'file type error'});
+                            _this.options.onSelect(event, _this.file, {
+                                'code': 1,
+                                'message': 'file type is not accept'
+                            });
                             return false;
                         }
                     }
@@ -188,7 +195,7 @@
                     var accept = _this.options.accept.split(',');
                     var arr = file.split(',');
                     if ($.inArray(arr[arr.length - 1], accept) < 0) {
-                        _this.options.onSelect(event, file, {'code': 0, 'message': '格式不支持'});
+                        _this.options.onSelect(event, file, {'code': 1, 'message': 'file type is not accept'});
                         return false;
                     }
                 }
