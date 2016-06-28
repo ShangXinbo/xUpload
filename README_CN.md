@@ -19,12 +19,12 @@
 ----------------|----------------|----
 name           | String          |  向后台传值的key，比如POST['file'],这里边的file，当multiple设置为true时，插件默认替换为“file[]” 
 auto             | Boolen        |  选择文件后是否自动启动上传  ，默认值 true
-accept         | String(MIME type)  | 仅支持现代浏览器，所支持上传文件的类型，标准的MIME类型，如不清楚可查[MIME 参考手册]（http://www.w3school.com.cn/media/media_mimeref.asp)
+accept         | String(MIME type)  | 设置支持的上传文件的类型，逗号间隔开的文件后缀的形式如”jpg,png,gif“,在现代浏览器上会转化成HTML5中input accept 属性，在这里我们会根据后缀名转化成MIME类型
 url                | String          | 上传文件请求的接口地址
 maxSize      | Number       | 仅支持现代浏览器，上传文件大小的阈值, 默认值 4\*1024\*1024
 data             | Object         | 除文件外，其他上传的参数，json键值对的格式
 multiple        | Boolen        | 仅支持现代浏览器，是否启用多文件上传，默认值 false
-onSelect      |  Function     | 当选择文件完成后触发, function([event],[files])
+onSelect      |  Function     | 当选择文件完成后触发, function([event],[files],[error])
 onSuccess  | Function      | 当上传成功后触发, function([data])
 onError        | Function      | 仅支持现代浏览器，当上传出现问题时触发,function([error])
 onProgress  | Function      | 仅支持现代浏览器，当xhr的progress事件触发时触发，用于跟踪上传文件的进度值 ,function([event])

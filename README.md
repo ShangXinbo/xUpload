@@ -20,12 +20,12 @@ name          | value         | description
 ---------------|---------------|----
 name          | String        | the key name in formdata to send to server，when multiple is setted true,the key will be replaced with 'name[]'
 auto            | Boolen      |  if true, upload triggered when select over; 
-accept        | String(MIME type)  |  only supported in modern browsers,the type of file you can select.More read [MIME](http://www.w3school.com.cn/media/media_mimeref.asp)
+accept        | String(MIME type)  |  the suffix of file that can be acceptted.In modern browsers it will init the "accept" attribute in input type file(MIME)
 url               | String        |  the URL of upload commit 
 maxSize     | Number     | only supported in modern browsers,maxSize limit you choose file, default 4\*1024\*1024 
 multiple       | Boolen      |  only supported in modern browsers, if true, multiple files choose is supported
 data            | Object       | other params eccept the file when form commit
-onSelect     |  Function   | trigger when selected file,function([event],[files])
+onSelect     |  Function   | trigger when selected file,function([event],[files],[error])
 onSuccess | Function    | trigger when upload success,function(data) 
 onError       | Function    | only supported in modern browsers, trigger when upload fail. function([error])
 onProgress | Function    | only supported in modern browsers, trigger when xhr onprogress. function([event])
