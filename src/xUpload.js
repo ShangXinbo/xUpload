@@ -66,7 +66,7 @@
         iframeLoadFirst = 0;
 
     function iframeUpload(obj, options) {
-        this.options = $.extend(defaults, options);
+        this.options = $.extend({},defaults, options);
         this.init(obj);
     };
 
