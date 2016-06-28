@@ -127,7 +127,7 @@
             var xhr = new XMLHttpRequest(); // new XMLHttpRequest2  html5 support
             xhr.open('POST', _this.options.url, true); //upload use method post
             xhr.onprogress = function(event){
-                this.options.onProgress(event);
+                _this.options.onProgress(event);
             };
             xhr.onload = function (event) {
                 if (xhr.status == 200) {
