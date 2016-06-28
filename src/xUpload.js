@@ -1,6 +1,6 @@
 /*
  * @fileOverview  xUpload
- * @version    1.2
+ * @version    1.3
  * @date       2016-3-24
  * @author     Xinbo Shang
  *
@@ -29,22 +29,23 @@
     var defaults = {
         auto: true,          // if set true, upload when you select files;
         name: 'file',        // post key of the file, you can get the file through file['name']
-        accept: '',          // the MIME type of files that the uploader can accept, only support in modern browsers
+        accept: '',          // the suffix of file that can be acceptted.In modern browsers it will init the "accept" attribute in input type file
         multiple: false,     // support multiple files upload, only support in modern browsers
         url: '/upload',      // the URL for commit
         maxSize: 4 * 1024 * 1024, // maxSize of the upload file, only support in modern browsers
         data: {},            // other params to send
-        onSelect: function (event,files) {   // trigger when select a file
+        onSelect: function (event, files, error) {   // trigger when select a file
             // @param event  the button of choose file
-            // @param files  files choosed
+            // @param files  files choosed,
+            // @param error  file select unexpected,with fail message
         },
         onSuccess: function (data) {         // trigger when upload success
             // @param data  xhr return data
         },
-        onError: function (error) {        // trigger when upload fail, only support in modern browsers
+        onError: function (error) {          // trigger when upload fail, only support in modern browsers
             // @param error  xhr.statusText
         },
-        onProgress:function(event){   // trigger when xhr2 progress, only support in modern browsers
+        onProgress: function (event) {   // trigger when xhr2 progress, only support in modern browsers
             // @param event progress
         }
     };
@@ -83,8 +84,19 @@
             }
 
             //accept file type limit ,MIME type string
-            if (this.options.accept) {
-                dom.attr('accept', this.options.accept);
+            if (_this.options.accept) {
+                var extension = _this.options.accept.split(',');
+                var mime = getMIME();
+                var mimestr = '';
+                for (var i = 0; i < extension.length; i++) {
+                    if (mime[extension[i]]) {
+                        mimestr += mime[extension[i]];
+                        if (i < extension.length - 1) {
+                            mimestr += ',';
+                        }
+                    }
+                }
+                dom.attr('accept', mimestr);
             }
 
             dom.on('change', function (event) {
@@ -96,10 +108,23 @@
                     }
                 }
                 _this.file = this.files;
-                _this.options.onSelect(event,_this.file);
+                if (_this.options.accept) {
+                    var accept = _this.options.accept.split(',');
+                    for (var j = 0; j < this.files.length; j++) {
+                        var arr = this.files[j].name.split('.');
+                        if ($.inArray(arr[arr.length - 1], accept) < 0) {
+                            console.error('file type error');
+                            _this.options.onSelect(event, _this.file, {'code': 0, 'message': 'file type error'});
+                            return false;
+                        }
+                    }
+                }
+
+                _this.options.onSelect(event, _this.file, null);
                 if (_this.options.auto) {
                     _this.upload();
                 }
+
             });
             $('body').append(dom);
         },
@@ -126,7 +151,7 @@
 
             var xhr = new XMLHttpRequest(); // new XMLHttpRequest2  html5 support
             xhr.open('POST', _this.options.url, true); //upload use method post
-            xhr.onprogress = function(event){
+            xhr.onprogress = function (event) {
                 _this.options.onProgress(event);
             };
             xhr.onload = function (event) {
@@ -138,7 +163,7 @@
                         _this.options.onError();
                     }
                 } else {
-                    _this.onError(xhr.statusText);
+                    _this.options.onError(xhr.statusText);
                 }
             };
             xhr.send(formData);
@@ -158,7 +183,16 @@
 
             html.on('change', function (event) {
                 var file = $(this).val();
-                _this.options.onSelect(event,file);
+
+                if (_this.options.accept) {
+                    var accept = _this.options.accept.split(',');
+                    var arr = file.split(',');
+                    if ($.inArray(arr[arr.length - 1], accept) < 0) {
+                        _this.options.onSelect(event, file, {'code': 0, 'message': '格式不支持'});
+                        return false;
+                    }
+                }
+                _this.options.onSelect(event, file, null);
                 if (this.options.auto) {
                     _this.upload(this);
                 }
@@ -189,7 +223,7 @@
     };
 
 
-    function getBtnCSS(target){
+    function getBtnCSS(target) {
         return {
             'width': $(target).width(),
             'height': $(target).height(),

@@ -10,17 +10,23 @@ html.uk-notouch.uk-height-1-1
         .uk-vertical-align.uk-text-center.uk-height-1-1
             .uk-vertical-align-middle
                 button.uk-button.uk-button-primary 点我上传
+        script(src='/js/MIME.js')
         script(src='/js/xUpload.min.js')
         script(type='text/javascript').
             $(function(){
                 $('button').xUpload({
                     url : '/upload/submit/',
                     maxSize: 4000000000,
+                    accept:'jpg,pdf',
+                    multiple: true,
+                    onSelect: function(event,file,err){
+                        console.log(err);
+                    },
                     onError: function(error){
                         console.log(error);
                     },
-                    onSuccess: function(){
-                        console.log(2);
+                    onSuccess: function(data){
+                        //console.log(data);
                     }
                 });
             });
