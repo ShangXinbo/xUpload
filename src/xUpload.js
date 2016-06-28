@@ -1,6 +1,6 @@
 /*
  * @fileOverview  xUpload
- * @version    1.3
+ * @version    1.3.1
  * @date       2016-3-24
  * @author     Xinbo Shang
  *
