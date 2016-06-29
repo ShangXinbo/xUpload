@@ -62,8 +62,7 @@
     /* upload for ie8~ie9
      * when use on older browsers
      */
-    var iframeNum = 0,
-        iframeLoadFirst = 0;
+    var iframeNum = 0;
 
     function iframeUpload(obj, options) {
         this.options = $.extend({},defaults, options);
@@ -76,7 +75,16 @@
 
             var _this = this;
 
-            var dom = $('<input type="file" />').css(getBtnCSS(target));
+            var dom = $('<input type="file" />').css({
+                'width': $(target).width(),
+                'height': $(target).height(),
+                'top': $(target).offset().top,
+                'left': $(target).offset().left,
+                'position': 'absolute',
+                'opacity': '0',
+                'cursor': 'pointer',
+                'z-index': 1000
+            });
 
             //set multiple
             if (_this.options.multiple) {
@@ -184,11 +192,15 @@
 
             iframeNum++;   //prevent Multiple uploader conflict
 
-            var iframe = $('<iframe name="iframe_' + iframeNum + '" style="display:none"></iframe>');
+            var iframe = $('<iframe data-loaded="0" name="iframe_' + iframeNum + '" style="display:none"></iframe>');
             var form = $('<form method="post" target="iframe_' + iframeNum + '" action="' + _this.options.url + '" name="form_' + iframeNum + '" enctype="multipart/form-data"></form>');
-            var html = $('<input type="file" name="' + _this.options.name + '" />').css(getBtnCSS(target));
+            var html = '<input type="file" name="' + _this.options.name +
+                        '" style="width:'+ target.width() +'px;height:'+ target.height() +
+                        'px;top:'+ target.offset().top +
+                        'px;left:'+ target.offset().left +
+                        'px;filter: alpha(opacity=0); position: absolute;cursor: pointer;z-index:1000;" />';
 
-            html.on('change', function (event) {
+            $(html).on('change', function (event) {
                 var file = $(this).val();
 
                 if (_this.options.accept) {
@@ -212,7 +224,7 @@
 
             form.append(html);
             iframe.load(function () {
-                if (iframeLoadFirst != 0) {
+                if (iframe.attr('data-loaded')>0) {
                     var contents = $(this).contents().get(0);
                     var data = $(contents).find('body').text();
                     if ('json' == _this.options.dataType) {
@@ -220,7 +232,7 @@
                     }
                     _this.options.onSuccess(data);
                 }
-                iframeLoadFirst = 1;     //to prevent iframe loaded trigger when the document loaded
+                iframe.attr('data-loaded',1);   //to prevent iframe loaded trigger when the document loaded
             });
             $('body').append(iframe).append(form);
         },
@@ -228,20 +240,6 @@
             $(obj).parents('form').submit();
         }
     };
-
-
-    function getBtnCSS(target) {
-        return {
-            'width': $(target).width(),
-            'height': $(target).height(),
-            'top': $(target).offset().top,
-            'left': $(target).offset().left,
-            'position': 'absolute',
-            'opacity': '0',
-            'cursor': 'pointer',
-            'z-index': 1000
-        };
-    }
 
     $.fn.xUpload = function (options) {
         //Multi element support
