@@ -55,7 +55,7 @@
      */
     var htmlUpload = function (obj, options) {
         this.file = '';
-        this.options = $.extend(defaults, options);
+        this.options = $.extend({},defaults, options);
         this.init(obj);
     };
 
@@ -75,16 +75,7 @@
 
             var _this = this;
 
-            var dom = $('<input type="file" />').css({
-                'width': $(target).width(),
-                'height': $(target).height(),
-                'top': $(target).offset().top,
-                'left': $(target).offset().left,
-                'position': 'absolute',
-                'opacity': '0',
-                'cursor': 'pointer',
-                'z-index': 1000
-            });
+            var dom = $('<input type="file" />').css(getBtnCSS(target));
 
             //set multiple
             if (_this.options.multiple) {
@@ -194,13 +185,9 @@
 
             var iframe = $('<iframe data-loaded="0" name="iframe_' + iframeNum + '" style="display:none"></iframe>');
             var form = $('<form method="post" target="iframe_' + iframeNum + '" action="' + _this.options.url + '" name="form_' + iframeNum + '" enctype="multipart/form-data"></form>');
-            var html = '<input type="file" name="' + _this.options.name +
-                        '" style="width:'+ target.width() +'px;height:'+ target.height() +
-                        'px;top:'+ target.offset().top +
-                        'px;left:'+ target.offset().left +
-                        'px;filter: alpha(opacity=0); position: absolute;cursor: pointer;z-index:1000;" />';
+            var html = $('<input type="file" name="' + _this.options.name +'" />').css(getBtnCSS(target));
 
-            $(html).on('change', function (event) {
+            html.on('change', function (event) {
                 var file = $(this).val();
 
                 if (_this.options.accept) {
@@ -217,20 +204,22 @@
                 }
             });
 
+            form.append(html);
             //other data
             for (key in this.options.data) {
-                html += '<input type="hidden" name="' + key + '" value="' + this.options.data[key] + '">';
+                form.append('<input type="hidden" name="' + key + '" value="' + this.options.data[key] + '">');
             }
 
-            form.append(html);
             iframe.load(function () {
                 if (iframe.attr('data-loaded')>0) {
                     var contents = $(this).contents().get(0);
                     var data = $(contents).find('body').text();
-                    if ('json' == _this.options.dataType) {
                         data = window.eval('(' + data + ')');
+                    if(data.status==0){
+                        _this.options.onSuccess(data);
+                    }else{
+                        _this.options.onError(data.message);
                     }
-                    _this.options.onSuccess(data);
                 }
                 iframe.attr('data-loaded',1);   //to prevent iframe loaded trigger when the document loaded
             });
@@ -240,6 +229,21 @@
             $(obj).parents('form').submit();
         }
     };
+
+    function getBtnCSS(target){
+        return {
+            'width': $(target).width(),
+            'height': $(target).height(),
+            'top': $(target).offset().top,
+            'left': $(target).offset().left,
+            'position': 'absolute',
+            'opacity': '0',
+            'filter': 'alpha(opacity=0)',
+            'cursor': 'pointer',
+            'z-index': 1000
+        };
+    }
+
 
     $.fn.xUpload = function (options) {
         //Multi element support
