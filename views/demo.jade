@@ -16,9 +16,10 @@ html.uk-notouch.uk-height-1-1
             $(function(){
                 $('button').xUpload({
                     url : '/upload/submit/',
+                    name: 'file',
                     maxSize: 4000000000,
                     accept:'jpg,pdf',
-                    multiple: true,
+                    multiple: false,
                     onSelect: function(event,file,err){
                         console.log(err);
                     },

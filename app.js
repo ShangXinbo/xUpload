@@ -4,7 +4,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const partials = require('express-partials');
-const uploads = require('multer')({dest: 'upload'});
+const uploads = require('multer')({dest:'upload'});
 const join = require('path').join;
 const http = require('http');
 const upload = require(__dirname + '/upload');
@@ -24,7 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app
     .get('/', upload.showtpl)
-    //.post('/upload/submit',account.isLogged, uploads.array('file[]'), upload.submit)   //多文件上传
+    //.post('/upload/submit', uploads.array('file[]'), upload.submit)   //多文件上传
     .post('/upload/submit', uploads.single('file'), upload.submit)    //单文件上传
 
 const server = http.createServer(app);

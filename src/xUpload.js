@@ -75,7 +75,7 @@
 
             var _this = this;
 
-            var dom = $('<input type="file" />').css(getBtnCSS(target));
+            var dom = $('<input type="file" name="'+ _this.options.name +'" />').css(getBtnCSS(target));
 
             //set multiple
             if (_this.options.multiple) {
