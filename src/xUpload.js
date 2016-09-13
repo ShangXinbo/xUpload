@@ -206,7 +206,7 @@
 
             form.append(html);
             //other data
-            for (key in this.options.data) {
+            for (var key in this.options.data) {
                 form.append('<input type="hidden" name="' + key + '" value="' + this.options.data[key] + '">');
             }
 
