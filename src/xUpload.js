@@ -199,7 +199,7 @@
                     }
                 }
                 _this.options.onSelect(event, file, null);
-                if (this.options.auto) {
+                if (_this.options.auto) {
                     _this.upload(this);
                 }
             });
