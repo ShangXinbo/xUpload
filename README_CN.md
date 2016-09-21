@@ -32,7 +32,7 @@ onProgress  | Function      | 仅支持现代浏览器，当xhr的progress事件
 ### 方法
 参数名称       |    描述
 --------------|------
-upload        |   触发文件上传（参数auto设为false的时候使用）
+upload()        |   触发文件上传（参数auto设为false的时候使用）
 
 
 ### 使用试例
