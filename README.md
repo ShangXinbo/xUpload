@@ -31,7 +31,7 @@ onError       | Function    | only supported in modern browsers, trigger when up
 onProgress | Function    | only supported in modern browsers, trigger when xhr onprogress. function([event])
 
 ### Method
-name         | description
+functions      | description
 ---------------|--------------
 upload()       | trigger the file upload start(use when option auto is false)
 
