@@ -1,7 +1,7 @@
 # xUpload
 
 A light uploader for jQuery which supports html5 and iframe methods.
-Long long ago, developing the uloader plugins troubled in the solution with IE6 compatibility.So we have to give up some new great APIs in modern browsers.Now IE6 is going to die.We must throw away the old solution to improve the interactive of our web apps.Then I create the xUpload.
+Long long ago, developing the uploader plugins troubled in the solution with IE6 compatibility.So we have to give up some new great APIs in modern browsers.Now IE6 is going to die.We must throw away the old solution to improve the interactive of our web apps.Then I create the xUpload.
 
 ### Plan
 In modern browsers ,I use new HTML5 input file APIs,which support multiple files,limit file types.we use XMLHttprequest2 APIs which support multiple file Form-data, and get progress when uploading.
