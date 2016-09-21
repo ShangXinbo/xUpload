@@ -5,6 +5,9 @@ const fs = require('fs');
 exports.showtpl = function(req, res) {
     res.render('demo');
 };
+exports.showtpl = function(req, res) {
+    res.render('demo');
+};
 exports.submit = function(req, res) {
     if(req.files){  //multiple
         for(var i=0;i<req.files.length;i++){

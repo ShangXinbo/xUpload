@@ -133,6 +133,7 @@
 
             });
             $('body').append(dom);
+            return this;
         },
 
         upload: function () {

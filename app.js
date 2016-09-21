@@ -23,7 +23,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app
-    .get('/', upload.showtpl)
+    .get('*',function(req,res,next){
+        res.render(path.join(__dirname,'views',req.path));
+        next();
+    })
     //.post('/upload/submit', uploads.array('file[]'), upload.submit)   //多文件上传
     .post('/upload/submit', uploads.single('file'), upload.submit)    //单文件上传
 
