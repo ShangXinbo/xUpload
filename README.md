@@ -8,7 +8,7 @@ In modern browsers ,we use new HTML5 input file APIs,which support multiple file
 in older browsers(ie8~ie9), we use iframe to upload without refresh page.In this way，we code less and easy.
 pay attention to that new APIs solution is trend,I made the two method separated.
 
-### feature
+### Feature
 * require jQuery 1.4+, it's a jQuery plugin
 * HTML5 function named __htmlUpload__  and iframe function named __iframeUpload__  automatic switch based user's browsers.
 * support ie8+ 
