@@ -30,6 +30,10 @@ onSuccess | Function    | trigger when upload success,function(data)
 onError       | Function    | only supported in modern browsers, trigger when upload fail. function([error])
 onProgress | Function    | only supported in modern browsers, trigger when xhr onprogress. function([event])
 
+### Method
+name         | description
+upload       | trigger the file upload start(use when option auto is false)
+
 ### Example
 <pre>
 $('#upload').xUpload({

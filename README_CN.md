@@ -29,6 +29,11 @@ onSuccess  | Function      | 当上传成功后触发, function([data])
 onError        | Function      | 仅支持现代浏览器，当上传出现问题时触发,function([error])
 onProgress  | Function      | 仅支持现代浏览器，当xhr的progress事件触发时触发，用于跟踪上传文件的进度值 ,function([event])
 
+### 方法
+参数名称       |    描述
+upload        |   触发文件上传（参数auto设为false的时候使用）
+
+
 ### 使用试例
 <pre>
 $('#upload').xUpload({
