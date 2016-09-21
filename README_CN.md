@@ -16,7 +16,7 @@
 
 ### 参数
 参数名称     |    参数值     |    描述
-----------------|----------------|----
+------------|--------------|----
 name           | String          |  向后台传值的key，比如POST['file'],这里边的file，当multiple设置为true时，插件默认替换为“file[]” 
 auto             | Boolen        |  选择文件后是否自动启动上传  ，默认值 true
 accept         | String(MIME type)  | 设置支持的上传文件的类型，逗号间隔开的文件后缀的形式如”jpg,png,gif“,在现代浏览器上会转化成HTML5中input accept 属性，在这里我们会根据后缀名转化成MIME类型
@@ -31,6 +31,7 @@ onProgress  | Function      | 仅支持现代浏览器，当xhr的progress事件
 
 ### 方法
 参数名称       |    描述
+--------------|------
 upload        |   触发文件上传（参数auto设为false的时候使用）
 
 

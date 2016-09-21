@@ -32,6 +32,7 @@ onProgress | Function    | only supported in modern browsers, trigger when xhr o
 
 ### Method
 name         | description
+---------------|--------------
 upload       | trigger the file upload start(use when option auto is false)
 
 ### Example
