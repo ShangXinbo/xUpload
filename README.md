@@ -6,7 +6,7 @@ Long long ago, developing the uploader plugins troubled in the solution with IE6
 ### Plan
 In modern browsers ,we use new HTML5 input file APIs,which support multiple files,limit file types.we use XMLHttprequest2 APIs which support multiple file Form-data, and get progress when uploading.
 In old browsers(ie8~ie9), we use iframe to upload without refresh page.In this way，we code less and easy.
-Pay attention to that new APIs solution is a growing trend,I made the two methods separated.
+Pay attention to that new APIs solution is a growing trend,I made the two methods separate.
 
 ### Feature
 * require jQuery 1.4+, it's a jQuery plugin
